@@ -11,10 +11,6 @@ def text_to_speach(text):
     engine.runAndWait()
 
 
-# text_to_speach('Hello')
-# text_to_speach('This is your home assistant in Grigorevo')
-
-
 def speech_to_text():
     r = sr.Recognizer()
     with sr.Microphone() as source:
