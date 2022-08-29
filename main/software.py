@@ -5,7 +5,7 @@ actions = {
     'lights is on': ['turn', 'on', 'lights'],
     'lights is off': ['turn', 'off', 'lights'],
     'weather check Sofia': ['is', 'weather', 'Sofia'],
-    # 'weather check Grigorevo': ['is', 'weather', 'Grigorevo'],
+    ## 'weather check Grigorevo': ['is', 'weather', 'Grigorevo'],
 }
 
 
