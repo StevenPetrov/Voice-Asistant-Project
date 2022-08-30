@@ -24,7 +24,7 @@ def weather_check(city):
 
         humidity = response['main']['humidity']
         city_name = city.split('.')[0]
-        result = f'The temperature in {city_name} is {temp:.0f} and the humidity is {humidity}'
+        result = f'The temperature in {city_name} is {temp:.0f} degrees and the humidity is {humidity} percents'
         text_to_speech(result)
 
 
