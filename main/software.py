@@ -38,3 +38,5 @@ while True:
             weather_check('Sofia')
         else:
             text_to_speech(com)
+
+

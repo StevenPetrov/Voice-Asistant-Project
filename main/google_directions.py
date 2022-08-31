@@ -1,0 +1,37 @@
+import urllib.request, json
+
+from main.tts_stt import speech_to_text, text_to_speech
+
+
+def google_map_directions():
+    endpoint = 'https://maps.googleapis.com/maps/api/directions/json?'
+    api_key = 'AIzaSyA2lbxU_4hk1BRQ1WsslVAchaEL_3dLwIw'
+
+    origin = ('Sofia, vitinya 14b').replace(' ','+')
+
+    tries = 0
+
+    while tries < 5:
+        text_to_speech('To which city you want to travel?')
+        dest_location = speech_to_text()
+        text_to_speech(f'The city is {dest_location} correct?')
+        confirmation = speech_to_text()
+        if confirmation is not None:
+            if 'yes' in confirmation:
+                text_to_speech('To which street you want to travel?')
+                dest_street = speech_to_text()
+                text_to_speech(f'The street is {dest_street} correct?')
+                confirmation = speech_to_text()
+                if 'yes' in confirmation:
+                    destination = f'Sofia, {dest_street}'
+                    nav_request = 'origin={}&destination={}&key={}'.format(origin,destination.replace(' ','+'),api_key)
+                    request = endpoint + nav_request
+
+                    response = urllib.request.urlopen(request).read()
+
+                    directions = json.loads(response)
+                    distance =(directions['routes'][0]['legs'][0]['distance']['text'])
+                    time = (directions['routes'][0]['legs'][0]['duration']['text']).split(' ')[0]
+                    text_to_speech(f'The distance is {distance} and the time needed to reach {dest_street} is {time} minutes')
+                    break
+        tries += 1
