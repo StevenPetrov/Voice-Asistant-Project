@@ -1,5 +1,5 @@
 from main.google_directions import google_map_directions
-from main.tts_stt import speech_to_text, text_to_speech
+from main.tts_stt import speech_to_text, text_to_speech, speech_to_text_bg
 from main.weather_services import weather_check
 
 NAME_OF_VOICE_ASSISTANT = 'Jarvis'
