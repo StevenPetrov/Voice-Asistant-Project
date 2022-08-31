@@ -1,6 +1,6 @@
 import urllib.request, json
 
-from main.tts_stt import speech_to_text, text_to_speech
+from main.tts_stt import speech_to_text, text_to_speech, speech_to_text_bg
 
 
 def google_map_directions():
@@ -19,19 +19,21 @@ def google_map_directions():
         if confirmation is not None:
             if 'yes' in confirmation:
                 text_to_speech('To which street you want to travel?')
-                dest_street = speech_to_text()
+                dest_street = speech_to_text_bg()
                 text_to_speech(f'The street is {dest_street} correct?')
-                confirmation = speech_to_text()
+                confirmation = speech_to_text_bg()
                 if 'yes' in confirmation:
                     destination = f'Sofia, {dest_street}'
                     nav_request = 'origin={}&destination={}&key={}'.format(origin,destination.replace(' ','+'),api_key)
                     request = endpoint + nav_request
 
                     response = urllib.request.urlopen(request).read()
-
-                    directions = json.loads(response)
-                    distance =(directions['routes'][0]['legs'][0]['distance']['text'])
-                    time = (directions['routes'][0]['legs'][0]['duration']['text']).split(' ')[0]
-                    text_to_speech(f'The distance is {distance} and the time needed to reach {dest_street} is {time} minutes')
-                    break
+                    try:
+                        directions = json.loads(response)
+                        distance =(directions['routes'][0]['legs'][0]['distance']['text'])
+                        time = (directions['routes'][0]['legs'][0]['duration']['text'])
+                        text_to_speech(f'The distance is {distance} and the time needed to reach {dest_street} is {time}')
+                        break
+                    except IndexError:
+                        text_to_speech("Sorry, but i couldn't find a route to this street.")
         tries += 1

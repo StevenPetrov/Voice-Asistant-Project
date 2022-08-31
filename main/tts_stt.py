@@ -17,11 +17,23 @@ def speech_to_text():
         # text_to_speech("Speak Anything")
         audio = r.listen(source)
         try:
-            text = r.recognize_google(audio)
-            # print("You said : {}".format(text))
+            text = r.recognize_google(audio)  # language='bg'
+            print("You said : {}".format(text))
             return text
         except:
             # print("Sorry could not recognize what you said")
             return None
 
 
+def speech_to_text_bg():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        # text_to_speech("Speak Anything")
+        audio = r.listen(source)
+        try:
+            text = r.recognize_google(audio, language='bg')
+            print("You said : {}".format(text))
+            return text
+        except:
+            # print("Sorry could not recognize what you said")
+            return None
