@@ -2,12 +2,12 @@ from main.google_directions import google_map_directions
 from main.tts_stt import speech_to_text, text_to_speech, speech_to_text_bg
 from main.weather_services import weather_check
 
-NAME_OF_VOICE_ASSISTANT = 'Jarvis'
+NAME_OF_VOICE_ASSISTANT = 'Виктория'
 
 
 def get_command_via_voice_assistant_name():
     while True:
-        command_via_voice = speech_to_text()
+        command_via_voice = speech_to_text_bg()
         print(command_via_voice)
         if command_via_voice is not None and NAME_OF_VOICE_ASSISTANT in command_via_voice:
             text_to_speech("I'm here")

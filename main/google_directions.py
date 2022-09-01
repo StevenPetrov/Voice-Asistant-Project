@@ -1,5 +1,6 @@
 import urllib.request, json
 
+from main.convertor_cyrillic_lto_latin import translate_to_latin
 from main.tts_stt import speech_to_text, text_to_speech, speech_to_text_bg
 
 
@@ -13,17 +14,14 @@ def google_map_directions():
 
     while tries < 5:
         text_to_speech('To which city you want to travel?')
-        dest_location = speech_to_text()
-        text_to_speech(f'The city is {dest_location} correct?')
-        confirmation = speech_to_text()
-        if confirmation is not None:
-            if 'yes' in confirmation:
+        dest_city = translate_to_latin(speech_to_text_bg())
+        print(dest_city)
+        if dest_city is not None:
                 text_to_speech('To which street you want to travel?')
-                dest_street = speech_to_text()
-                text_to_speech(f'The street is {dest_street} correct?')
-                confirmation = speech_to_text()
-                if 'yes' in confirmation:
-                    destination = f'Sofia, {dest_street}'
+                dest_street = translate_to_latin(speech_to_text_bg())
+                print(dest_street)
+                if dest_street is not None:
+                    destination = f'{dest_city}, {dest_street}'
                     nav_request = 'origin={}&destination={}&key={}'.format(origin,destination.replace(' ','+'),api_key)
                     request = endpoint + nav_request
 

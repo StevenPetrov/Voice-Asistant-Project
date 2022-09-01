@@ -39,7 +39,7 @@ def speech_to_text():
 def speech_to_text_bg():
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        text_to_speech("Speak Anything")
+        # text_to_speech("Speak Anything")
         audio = r.listen(source)
         try:
             text = r.recognize_google(audio, language='bg')
@@ -49,5 +49,3 @@ def speech_to_text_bg():
             # print("Sorry could not recognize what you said")
             return None
 
-
-text_to_speech_bg('Йоничка ти си сладичка')

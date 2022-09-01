@@ -1,8 +1,23 @@
 import requests
 import math
 
-from main.tts_stt import text_to_speech
+from main.convertor_cyrillic_lto_latin import translate_to_cyrillic
+from main.tts_stt import text_to_speech, text_to_speech_bg
 
+
+def sound_response(city, temp, feels_like, wind, humidity, weather):
+    weather_map = {
+        'light rain' : ' е облачно с леки превалявания',
+        'overcast clouds': 'е предимно облачно',
+        'clear sky' : 'е тихо и спокойно',
+        'broken clouds' : 'е с разкъсана облачност'
+    }
+
+    result = f'Времето в {city} {weather_map[weather]} като температурата е {temp:.0f} градуса, ' \
+             f'усеща се като {feels_like:.0f} градуса, влажността на въздуха е {humidity} процента, ' \
+             f'а скоростта на вятъра е около {math.floor(wind)} метра в секунда.'
+
+    text_to_speech_bg(result)
 
 def weather_check(city):
     city_name = f"{city}, BG"
@@ -12,6 +27,7 @@ def weather_check(city):
         url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}"
 
         response = requests.get(url).json()
+
         temp = response['main']['temp']
         temp = math.floor((temp * 1.8) - 459.67)
         temp -= 32
@@ -22,10 +38,11 @@ def weather_check(city):
         feels_like -= 32
         feels_like *= 0.5556
 
+        wind = response['wind']['speed']
         humidity = response['main']['humidity']
-        city_name = city.split('.')[0]
-        result = f'The temperature in {city_name} is {temp:.0f} degrees and the humidity is {humidity} percents'
-        text_to_speech(result)
-
+        weather = response['weather'][0]['description']
+        city = city.split(',')[0]
+        translate_to_cyrillic(city)
+        sound_response(city, temp, feels_like, wind, humidity, weather)
 
     get_weather(api_key, city_name)
