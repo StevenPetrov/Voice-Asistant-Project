@@ -1,7 +1,8 @@
 import urllib.request, json
+import time
 
 from main.convertor_cyrillic_lto_latin import translate_to_latin
-from main.tts_stt import speech_to_text, text_to_speech, speech_to_text_bg
+from main.tts_stt import speech_to_text, text_to_speech, speech_to_text_bg, text_to_speech_bg
 
 
 def google_map_directions():
@@ -13,12 +14,14 @@ def google_map_directions():
     tries = 0
 
     while tries < 5:
-        text_to_speech('To which city you want to travel?')
+        text_to_speech_bg('До кой град желаете да пътувате?')
         dest_city = translate_to_latin(speech_to_text_bg())
         print(dest_city)
         if dest_city is not None:
-                text_to_speech('To which street you want to travel?')
-                dest_street = translate_to_latin(speech_to_text_bg())
+                time.sleep(1)
+                text_to_speech_bg('До коя улица?')
+                dest_street_cyrillic = speech_to_text_bg()
+                dest_street = translate_to_latin(dest_street_cyrillic)
                 print(dest_street)
                 if dest_street is not None:
                     destination = f'{dest_city}, {dest_street}'
@@ -28,9 +31,18 @@ def google_map_directions():
                     response = urllib.request.urlopen(request).read()
                     try:
                         directions = json.loads(response)
-                        distance =(directions['routes'][0]['legs'][0]['distance']['text'])
-                        time = (directions['routes'][0]['legs'][0]['duration']['text'])
-                        text_to_speech(f'The distance is {distance} and the time needed to reach this address is {time}') # {dest_street}
+                        distance =(directions['routes'][0]['legs'][0]['distance']['text']).split(' ')[0]
+                        time_info = (directions['routes'][0]['legs'][0]['duration']['text'])
+                        if len(time_info) > 2:
+                            hours = time_info.split(' ')[0]
+                            mins = time_info.split(' ')[2]
+                            if hours == '1':
+                                time_info = f"{hours} час и {mins} минути"
+                            else:
+                                time_info = f"{hours} часа и {mins} минути"
+                        else:
+                            time_info = f"{time_info.split(' ')[0]} минути"
+                        text_to_speech_bg(f'Разстоянието до улица {dest_street_cyrillic} e {distance} километра, а времето за достигането й е {time_info}') # {dest_street}
                         break
                     except IndexError:
                         text_to_speech("Sorry, but i couldn't find a route to this street.")

@@ -1,3 +1,4 @@
+from main.convertor_cyrillic_lto_latin import translate_to_latin
 from main.google_directions import google_map_directions
 from main.tts_stt import speech_to_text, text_to_speech, speech_to_text_bg
 from main.weather_services import weather_check
@@ -13,7 +14,7 @@ def get_command_via_voice_assistant_name():
             text_to_speech("I'm here")
             tries = 0
             while tries < 3:
-                command_via_voice = speech_to_text()
+                command_via_voice = speech_to_text_bg()
                 tries += 1
                 if command_via_voice is None:
                     print('None' + f'{tries}')
@@ -21,7 +22,6 @@ def get_command_via_voice_assistant_name():
                     print(command_via_voice + f'{tries}')
                 if command_via_voice is not None:
                     return command_via_voice
-            # text_to_speech("Sorry I didnt get that")
 
 
 class LightsControl:
@@ -45,30 +45,19 @@ class LightsControl:
         return None
 
 
-class WeatherCheck:
-    def __init__(self,command_via_voice):
-        self.command_via_voice = command_via_voice
+def weather_check_info_get(main_command):
+    command = main_command
 
-    cities = ['Sofia', 'Varna', 'Plovdiv', 'Burgas',]
-    command_check = ['what', 'weather']
+    def city_get(command):
+        city = command.split(' ')[-1]
+        return city
 
-    def city_get(self):
-        for city in self.cities:
-            if city in self.command_via_voice:
-                return city
-        return None
+    def mainloop(command):
+        city = city_get(command)
+        latin_city = translate_to_latin(city)
+        weather_check(latin_city)
 
-    def mainloop(self):
-        city = self.city_get()
-        if city is None:
-            city = 'Sofia'
-        found = True
-        for word in self.command_check:
-            if word not in self.command_via_voice:
-                found = False
-                break
-        if found:
-            weather_check(city)
+    mainloop(command)
 
 
 def get_command_type(command_via_voice):
@@ -76,10 +65,10 @@ def get_command_type(command_via_voice):
     if 'light' in command_via_voice:
         command_type = 'lights'
         return command_type
-    elif 'weather' in command_via_voice:
+    elif 'време' in command_via_voice:
         command_type = 'weather'
         return command_type
-    elif 'google' in command_via_voice or 'directions' in command_via_voice:
+    elif 'стартирай' in command_via_voice or 'навигация' in command_via_voice:
         command_type = 'directions'
         return command_type
     return command_type
@@ -92,13 +81,10 @@ def mainloop():
         if type_of_command is None:
             continue
         elif type_of_command == 'weather':
-            WeatherCheck(main_command).mainloop()
+            weather_check_info_get(main_command)
         elif type_of_command == 'lights':
             LightsControl(main_command).mainloop()
         elif type_of_command == 'directions':
             google_map_directions()
-
-
-
 
 mainloop()

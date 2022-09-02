@@ -10,7 +10,8 @@ def sound_response(city, temp, feels_like, wind, humidity, weather):
         'light rain' : ' е облачно с леки превалявания',
         'overcast clouds': 'е предимно облачно',
         'clear sky' : 'е тихо и спокойно',
-        'broken clouds' : 'е с разкъсана облачност'
+        'broken clouds' : 'е с разкъсана облачност',
+        'mist' : 'е мъгливо'
     }
 
     result = f'Времето в {city} {weather_map[weather]} като температурата е {temp:.0f} градуса, ' \
