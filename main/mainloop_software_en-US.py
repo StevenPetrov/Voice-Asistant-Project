@@ -1,5 +1,6 @@
 from main.convertor_cyrillic_lto_latin import translate_to_latin
 from main.google_directions import google_map_directions
+from main.news_catcher5 import news_scrapper
 from main.tts_stt import speech_to_text, text_to_speech, speech_to_text_bg
 from main.weather_services import weather_check
 
@@ -71,6 +72,9 @@ def get_command_type(command_via_voice):
     elif 'стартирай' in command_via_voice or 'навигация' in command_via_voice:
         command_type = 'directions'
         return command_type
+    elif 'новини' in command_via_voice:
+        command_type = 'news'
+        return command_type
     return command_type
 
 
@@ -86,5 +90,7 @@ def mainloop():
             LightsControl(main_command).mainloop()
         elif type_of_command == 'directions':
             google_map_directions()
+        elif type_of_command == 'news':
+            news_scrapper()
 
 mainloop()

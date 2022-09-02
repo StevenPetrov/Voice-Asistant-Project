@@ -18,6 +18,19 @@ def text_to_speech_bg(text):
         except PlaysoundException:
             continue
 
+def text_to_speech_en(text):
+    language = 'en'
+    command = gTTS(text, lang=language, slow=False)
+    while True:
+        try:
+            command.save("command.mp3")
+            time.sleep(1)
+            playsound("command.mp3")
+            os.remove("command.mp3")
+            break
+        except PlaysoundException:
+            continue
+
 def text_to_speech(text):
     engine = pyttsx3.init()
     engine.setProperty('rate', 120)
