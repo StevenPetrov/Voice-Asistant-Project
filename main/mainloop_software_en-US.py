@@ -1,4 +1,5 @@
 from main.convertor_cyrillic_lto_latin import translate_to_latin
+from main.crypto_info_scrapping import crypto_price
 from main.google_directions import google_map_directions
 from main.news_catcher5 import news_scrapper
 from main.tts_stt import speech_to_text, text_to_speech, speech_to_text_bg
@@ -75,6 +76,9 @@ def get_command_type(command_via_voice):
     elif 'новини' in command_via_voice:
         command_type = 'news'
         return command_type
+    elif 'крипто' in command_via_voice:
+        command_type = 'crypto'
+        return command_type
     return command_type
 
 
@@ -92,5 +96,7 @@ def mainloop():
             google_map_directions()
         elif type_of_command == 'news':
             news_scrapper()
+        elif type_of_command == 'crypto':
+            crypto_price()
 
 mainloop()
