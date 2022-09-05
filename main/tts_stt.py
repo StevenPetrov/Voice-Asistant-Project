@@ -5,6 +5,7 @@ import os
 from playsound import playsound, PlaysoundException
 import time
 
+
 def text_to_speech_bg(text):
     language = 'bg'
     command = gTTS(text, lang=language, slow=False)
@@ -18,6 +19,7 @@ def text_to_speech_bg(text):
         except PlaysoundException:
             continue
 
+
 def text_to_speech_en(text):
     language = 'en'
     command = gTTS(text, lang=language, slow=False)
@@ -30,6 +32,7 @@ def text_to_speech_en(text):
             break
         except PlaysoundException:
             continue
+
 
 def text_to_speech(text):
     engine = pyttsx3.init()
