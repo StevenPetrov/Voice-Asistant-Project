@@ -7,7 +7,7 @@ from main.tts_stt import speech_to_text, text_to_speech, speech_to_text_bg, text
 
 def google_map_directions():
     endpoint = 'https://maps.googleapis.com/maps/api/directions/json?'
-    api_key = ''
+    api_key = ' '
 
     origin = ('Sofia, vitinya 14b').replace(' ','+')
 
