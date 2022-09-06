@@ -13,7 +13,7 @@ def google_map_directions():
 
     tries = 0
 
-    while tries < 5:
+    while tries < 2:
         text_to_speech_bg('До кой град желаете да пътувате?')
         dest_city = translate_to_latin(speech_to_text_bg())
         print(dest_city)
@@ -37,13 +37,13 @@ def google_map_directions():
                             hours = time_info.split(' ')[0]
                             mins = time_info.split(' ')[2]
                             if hours == '1':
-                                time_info = f"{hours} час и {mins} минути"
+                                time_info = f"{hours} час и {mins} минути."
                             else:
-                                time_info = f"{hours} часа и {mins} минути"
+                                time_info = f"{hours} часа и {mins} минути."
                         else:
-                            time_info = f"{time_info.split(' ')[0]} минути"
+                            time_info = f"{time_info.split(' ')[0]} минути."
                         text_to_speech_bg(f'Разстоянието до улица {dest_street_cyrillic} e {distance} километра, а времето за достигането й е {time_info}') # {dest_street}
                         break
                     except IndexError:
-                        text_to_speech("Sorry, but i couldn't find a route to this street.")
+                        text_to_speech_bg(f'Съжалявам, но не успях да намеря маршерут до тази локация.')
         tries += 1
